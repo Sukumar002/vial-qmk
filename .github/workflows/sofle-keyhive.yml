@@ -1,0 +1,63 @@
+name: Sofle Keyhive Elite-C Firmware
+
+on:
+  push:
+    branches: [vial, sofle-keyhive-lite]
+    paths:
+      - 'keyboards/sofle/**'
+      - '.github/workflows/sofle-keyhive.yml'
+  pull_request:
+    branches: [vial]
+    paths:
+      - 'keyboards/sofle/**'
+      - '.github/workflows/sofle-keyhive.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build Sofle Keyhive Vial (Elite-C)
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/qmk/qmk_cli@sha256:2dc05fc9f32efebd6b05c2b8676ee548358bc7e151e9dbf4dac6b6eed4513b07
+
+    steps:
+      - name: Checkout firmware and submodules
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          persist-credentials: false
+
+      - name: Compile Sofle Keyhive
+        shell: bash
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          qmk compile -kb sofle/keyhive -km vial
+
+      - name: Check ATmega32U4 flash consumption
+        shell: bash
+        run: |
+          set -euo pipefail
+          elf="$(find .build -maxdepth 1 -name 'sofle_keyhive_vial.elf' -print -quit)"
+          if [[ -z "$elf" ]]; then
+            echo "::error::Compiled ELF not found"
+            exit 1
+          fi
+          avr-size -C --mcu=atmega32u4 "$elf"
+          bytes="$(avr-size --format=berkeley "$elf" | awk 'NR==2 {print $1+$2}')"
+          limit=28672
+          echo "Flash used: $bytes / $limit bytes" | tee -a "$GITHUB_STEP_SUMMARY"
+          if (( bytes > limit )); then
+            echo "::error::Firmware exceeds conservative Elite-C flash budget ($limit bytes)."
+            exit 1
+          fi
+
+      - name: Upload flashable HEX
+        uses: actions/upload-artifact@v4
+        with:
+          name: sofle-keyhive-elite-c-vial
+          path: .build/sofle_keyhive_vial.hex
+          if-no-files-found: error
+          retention-days: 30
