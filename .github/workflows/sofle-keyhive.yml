@@ -2,7 +2,7 @@ name: Sofle Keyhive Elite-C Firmware
 
 on:
   push:
-    branches: [vial, sofle-keyhive-lite]
+    branches: [vial, sofle-keyhive-lite, 'experiment/dynamic-modtap-combos']
     paths:
       - 'keyboards/sofle/**'
       - '.github/workflows/sofle-keyhive.yml'
