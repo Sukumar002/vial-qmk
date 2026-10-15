@@ -45,7 +45,7 @@ jobs:
             echo "::error::Compiled ELF not found"
             exit 1
           fi
-          avr-size -C --mcu=atmega32u4 "$elf"
+          avr-size --format=berkeley "$elf"
           bytes="$(avr-size --format=berkeley "$elf" | awk 'NR==2 {print $1+$2}')"
           limit=28672
           echo "Flash used: $bytes / $limit bytes" | tee -a "$GITHUB_STEP_SUMMARY"
