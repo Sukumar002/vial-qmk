@@ -10,7 +10,7 @@
 // Constrain dynamic storage for ATmega32U4/Elite-C.
 #define DYNAMIC_KEYMAP_LAYER_COUNT 4
 #define DYNAMIC_KEYMAP_MACRO_COUNT 8
-#define VIAL_COMBO_ENTRIES 8
+#define VIAL_COMBO_ENTRIES 32
 
 // Mod-tap is a core QMK feature and remains available without a feature flag.
 #define TAPPING_TERM 200
