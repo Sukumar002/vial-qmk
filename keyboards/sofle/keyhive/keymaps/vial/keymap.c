@@ -1,6 +1,8 @@
 // Copyright 2026
 // SPDX-License-Identifier: GPL-2.0-or-later
 #include QMK_KEYBOARD_H
+#include "vial.h"
+#include "dynamic_keymap.h"
 #include "oled.c"
 
 enum sofle_layers { BASE, LOWER, RAISE, ADJUST };
@@ -47,3 +49,32 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][2] = {
     [RAISE]  = { ENCODER_CCW_CW(KC_TRNS, KC_TRNS), ENCODER_CCW_CW(KC_TRNS, KC_TRNS) },
     [ADJUST] = { ENCODER_CCW_CW(KC_TRNS, KC_TRNS), ENCODER_CCW_CW(KC_TRNS, KC_TRNS) },
 };
+
+// These are reset-time defaults for the existing 24 Vial-editable combo slots.
+// Existing EEPROM customizations are not changed during normal operation.
+#ifdef VIAL_COMBO_ENABLE
+void vial_combo_defaults_user(void) {
+    const vial_combo_entry_t combo_0 = { .input = {KC_J, KC_K, KC_NO, KC_NO}, .output = LALT_T(KC_BSPC) };
+    dynamic_keymap_set_combo(0, &combo_0);
+    const vial_combo_entry_t combo_1 = { .input = {KC_K, KC_L, KC_NO, KC_NO}, .output = LGUI_T(KC_DEL) };
+    dynamic_keymap_set_combo(1, &combo_1);
+    const vial_combo_entry_t combo_2 = { .input = {KC_J, KC_L, KC_NO, KC_NO}, .output = LCTL_T(KC_QUOT) };
+    dynamic_keymap_set_combo(2, &combo_2);
+    const vial_combo_entry_t combo_3 = { .input = {KC_D, KC_F, KC_NO, KC_NO}, .output = LALT_T(KC_TAB) };
+    dynamic_keymap_set_combo(3, &combo_3);
+    const vial_combo_entry_t combo_4 = { .input = {KC_S, KC_D, KC_NO, KC_NO}, .output = LGUI_T(KC_GRV) };
+    dynamic_keymap_set_combo(4, &combo_4);
+    const vial_combo_entry_t combo_5 = { .input = {KC_S, KC_F, KC_NO, KC_NO}, .output = LCTL_T(KC_ESC) };
+    dynamic_keymap_set_combo(5, &combo_5);
+    const vial_combo_entry_t combo_6 = { .input = {KC_F, KC_J, KC_NO, KC_NO}, .output = LSFT(KC_EQL) };
+    dynamic_keymap_set_combo(6, &combo_6);
+    const vial_combo_entry_t combo_7 = { .input = {KC_D, KC_K, KC_NO, KC_NO}, .output = KC_MINS };
+    dynamic_keymap_set_combo(7, &combo_7);
+    const vial_combo_entry_t combo_8 = { .input = {KC_S, KC_L, KC_NO, KC_NO}, .output = LSFT(KC_MINS) };
+    dynamic_keymap_set_combo(8, &combo_8);
+    const vial_combo_entry_t combo_9 = { .input = {KC_E, KC_F, KC_NO, KC_NO}, .output = KC_LBRC };
+    dynamic_keymap_set_combo(9, &combo_9);
+    const vial_combo_entry_t combo_10 = { .input = {KC_I, KC_J, KC_NO, KC_NO}, .output = KC_RBRC };
+    dynamic_keymap_set_combo(10, &combo_10);
+}
+#endif
