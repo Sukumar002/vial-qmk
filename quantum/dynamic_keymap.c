@@ -113,6 +113,10 @@ int dynamic_keymap_set_alt_repeat_key(uint8_t index, const vial_alt_repeat_key_e
 }
 #endif
 
+#ifdef VIAL_COMBO_ENABLE
+__attribute__((weak)) void vial_combo_defaults_user(void) {}
+#endif
+
 void dynamic_keymap_reset(void) {
 #ifdef VIAL_ENABLE
     /* temporarily unlock the keyboard so we can set hardcoded QK_BOOT keycode */
@@ -156,6 +160,8 @@ void dynamic_keymap_reset(void) {
         vial_combo_entry_t combo = { 0 };
         for (size_t i = 0; i < VIAL_COMBO_ENTRIES; ++i)
             dynamic_keymap_set_combo(i, &combo);
+        // Keyboard-specific defaults; no effect on other keyboards unless overridden.
+        vial_combo_defaults_user();
     }
 #endif
 
