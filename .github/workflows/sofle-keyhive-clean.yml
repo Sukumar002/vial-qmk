@@ -1,7 +1,7 @@
 name: Sofle Keyhive Elite-C Firmware
 on:
   push:
-    branches: [sofle-keyhive-clean]
+    branches: [sofle-keyhive-clean, 'experiment/sofle-vial-ui-stagger']
     paths:
       - 'keyboards/sofle/**'
       - '.github/workflows/sofle-keyhive-clean.yml'
