@@ -1,10 +1,6 @@
 // Compact monochrome status UI for Sofle OLED modules.
 #ifdef OLED_ENABLE
 
-static void oled_status_line(const char *label, bool active) {
-    oled_write_ln(label, active);
-}
-
 oled_rotation_t oled_init_user(oled_rotation_t rotation) {
     return OLED_ROTATION_270;
 }
