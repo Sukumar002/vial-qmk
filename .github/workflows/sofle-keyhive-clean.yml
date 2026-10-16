@@ -16,7 +16,10 @@ jobs:
         with:
           submodules: recursive
       - name: Compile Sofle Keyhive Vial
-        run: qmk compile -kb sofle/keyhive -km vial
+        shell: bash
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          qmk compile -kb sofle/keyhive -km vial
       - name: Verify Elite-C flash usage
         shell: bash
         run: |
